@@ -1,0 +1,18 @@
+** OOP 的某个小作业
+*** 教室使用情况管理系统
+*** 架构
+python
+bootstrap
+flask
+sql-alchemy
+mysql
+jquery-ajax
+
+*** 进度
+**** DONE 数据库，实体设计实现
+**** DONE 注册，登录
+**** TODO 验证
+**** DONE 异步检索
+**** TODO 使用计划的新建
+**** TODO 使用计划的编辑删除
+**** TODO 教室的新建和删除
