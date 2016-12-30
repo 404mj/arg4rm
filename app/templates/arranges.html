@@ -1,0 +1,123 @@
+{% extends 'base.html' %}{% block title %}Arranges{% endblock %} {% block script %} {{super()}}
+{% endblock %} {% block content %}
+
+<div class="container-fluid">
+    <div class="panel panel-info">
+        <div class="panel-heading">Arrange Panel</div>
+        <div class="panel-body">
+            <p></p>
+        </div>
+        <div class="row">
+            <!-- 输入行 -->
+            <!--  bootstrap 栅格系统-->
+            <div class="col-md-3">
+              <div class="input-group">
+                  <span class="input-group-addon">开始时间</span>
+                  <input type="text" class="form-control" placeholder="" id="start_input">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="input-group">
+                  <span class="input-group-addon">截止时间</span>
+                  <input type="text" class="form-control" placeholder="" id="end_input">
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="input-group">
+                  <span class="input-group-addon">房间号</span>
+                  <input type="text" class="form-control" placeholder="" id="room_num">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" id="searchBtn">Search</button>
+                <button type="button" class="btn btn-primary" id="createBtn">Create</button>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="row">
+            <!-- 展示列表 -->
+            <div class="col-md-12">
+                <table class="table table-hover">
+                    {% if arranges | length > 0 %}
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>会议室</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>联系人</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table_body">
+                        {% for arr in arranges %}
+                        <tr>
+                            <td>{{loop.index}}</td>
+
+                            <td>{{arr.rm.rmNum}}</td>
+
+                            <td>{{arr.startTime}}</td>
+                            <td>{{arr.endTime}}</td>
+
+                            <td>{{arr.user.name}}</td>
+                        </tr>
+                        {% endfor %} {% else %}
+                        <h3><em>No Relative Datas</em></h3> {% endif %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+  </div>
+
+{% endblock %}
+
+{% block footer %}
+<script type="text/javascript">
+    $('#start_input').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii:ss'
+        });
+    $('#end_input').datetimepicker({
+      format: 'yyyy-mm-dd hh:ii:ss'
+    });
+    // 使用Ajax传输数据
+    $('#searchBtn').click(function(){
+      // 在模板里面的js代码中使可以使用Jinja2的语法！！！
+      // alert($('#start_input').val());
+      // var lalal = {{ arranges | length }}
+      // alert(lalal);
+      var si = $('#start_input').val();
+      var ei = $('#end_input').val();
+      var rm = $('#room_num').val();
+
+      $.ajax({
+            url: '/arranges',
+            type: 'POST',
+            data: {
+              start_time: si,
+              end_time: ei,
+              room_num: rm
+            },
+            success: function(returndatas) {
+              //怎样把原来的tbody内容擦除添加上新内容?
+              // $('#table_body').html('');
+              //load函数却是会加载页面，但也是全部的html文件
+              // $('#table_body').load('/arranges');
+              // {{ arranges == returndata }}
+              // alert(returndatas.length);
+              // console.log(returndatas)
+              var appendHtml = "";
+              for(var i=1; i <= returndatas.length; i++){
+                var insideTr = "<tr><td>"+i+"</td><td>"+returndatas[i-1].linked_rmNum+"</td><td>"+returndatas[i-1].startTime+"</td><td>"+returndatas[i-1].endTime+"</td><td>"+returndatas[i-1].linked_username+"</td></tr>";
+                appendHtml = appendHtml+insideTr;
+              }
+              $('#table_body').html(appendHtml);
+            }
+         });
+    });
+</script>
+{% endblock %}

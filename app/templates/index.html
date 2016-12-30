@@ -1,0 +1,16 @@
+{% extends 'base.html' %}{% block title %}index{% endblock %} {% block content %}
+<div class="jumbotron">
+
+    <h1>Welcome to use Arg4rm!  </h1> {% if current_user.is_authenticated %}
+    <p>
+        <h2>欢迎登入：  {{ current_user.name }}</h2>
+    </p>
+    {% else %}
+    <p>
+        您还没有登入,请点击
+        <a class="btn btn-lg btn-primary" href="{{ url_for('login') }}" role="button">登入</a>
+
+    </p>
+    {% endif %}
+</div>
+{% endblock %}

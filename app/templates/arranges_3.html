@@ -1,0 +1,83 @@
+{% extends 'base.html' %}{% block title %}Arranges{% endblock %} {% block script %} {{super()}}
+<script type="text/javascript">
+    $('#start_time_input').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii:ss'
+    });
+    $('#end_time_input').click(function() {
+        this.datetimepicker({
+            format: 'yyyy-mm-dd hh:ii:ss'
+        });
+    });
+    $('#datetimepicker').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii'
+    });
+</script>
+
+{% endblock %} {% block content %}
+<div class="container">
+    <div class="panel panel-info">
+        <div class="panel-heading">Arrange Panel</div>
+        <div class="panel-body">
+            <p></p>
+        </div>
+        <div class="row">
+            <!-- 输入行 -->
+            <!--  bootstrap 栅格系统-->
+            {{ form.start_time.label }}:{{ form.start_time(id = "start_time_input", class_="input-append date") }}
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2">
+                {{ form.end_time.label }}:{{ form.end_time(id="end_time_input" , class_="input-append date") }}
+            </div>
+            <div class="col-md-2">
+                {{ form.room_num.label }}:{{ form.room_num(id="room_num_input") }}
+                <input type="text" value="2012-05-15 21:05" id="datetimepicker">
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" id="searchBtn">Search</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-primary" id="createBtn">Create</button>
+            </div>
+        </div>
+        <div class="row">
+            <!-- 展示列表 -->
+            <div class="col-md-8">
+                <table class="table table-hover">
+                    {% if arranges | length > 0 %}
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>会议室</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>联系人</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for arr in arranges %}
+                        <tr>
+                            <td>{{loop.index}}</td>
+
+                            <td>{{arr.room.rmNum}}</td>
+
+                            <td>{{arr.startTime}}</td>
+                            <td>{{arr.endTime}}</td>
+
+                            <td>{{arr.user.name}}</td>
+                        </tr>
+                        {% endfor %} {% else %}
+                    </tbody>
+                    <h3><em>No Relative Datas</em></h3> {% endif %}
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>
+
+{% endblock %}

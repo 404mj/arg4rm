@@ -1,0 +1,10 @@
+<!-- extend base layout -->
+{% extends "base.html" %} {% block title %}register{% endblock %} {% import "bootstrap/wtf.html" as wtf %} {% block content %}
+<div class="col-md-6">
+    <h1>注册</h1>
+    <hr>{{ wtf.quick_form(form) }}
+</div>
+<div class="col-md-6">
+</div>
+
+{% endblock %}
